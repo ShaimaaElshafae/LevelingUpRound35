@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 
-public class DuckduckgoTestsByFirfox {
+public class DuckduckgoByFirfoxTests {
     WebDriver driver;
 
     //variable for explicit wait
