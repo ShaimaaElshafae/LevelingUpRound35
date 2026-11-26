@@ -1,23 +1,20 @@
 package testPackage.Pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+import Pages.Duckduckgo;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
+
 
 
 public class DuckduckgoByFirfoxTests {
     WebDriver driver;
-
+    Duckduckgo duckduckgoPage;
     //variable for explicit wait
     WebDriverWait wait;
 
@@ -34,6 +31,7 @@ public class DuckduckgoByFirfoxTests {
 
 // 4. Navigate to DuckDuckGo
         driver.get("https://duckduckgo.com");
+        duckduckgoPage = new Duckduckgo(driver);
 
     }
 
@@ -51,18 +49,16 @@ Close Mozilla Firefox
 public void testDuckduckgoSearchTestNG() {
 
     // Locate the search input field and enter the search query
-    driver.findElement(By.name("q")).sendKeys("TestNG"+ Keys.ENTER);
+    duckduckgoPage.search("TestNG");
 
 
    //locate the fourth result link and get its text
-    By locatorFourthResultText = By.xpath("(//span[@class='EKtkFWMYpwzMKOYr0GYm LQVY1Jpkk8nyJ6HBWKAk'])[4]");
-    WebElement fourthResultElement = wait.until(ExpectedConditions.visibilityOfElementLocated(locatorFourthResultText));
-    String FourthResultText = fourthResultElement.getText();
-    System.out.println("Fourth result text: " + FourthResultText);
+
+    System.out.println("Fourth result text: " + duckduckgoPage.getFourthResultText());
 
 
     // Assert that the first result link is as expected
-    Assert.assertEquals(FourthResultText, "TestNG Tutorial");
+    Assert.assertEquals(duckduckgoPage.getFourthResultText(), "TestNG Tutorial");
 }
 
 
