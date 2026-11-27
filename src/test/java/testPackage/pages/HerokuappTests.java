@@ -1,6 +1,6 @@
-package testPackage.Pages;
+package testPackage.pages;
 
-import Pages.Herokuapp;
+import pages.Herokuapp;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -8,10 +8,13 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import utils.ExcelReader;
 
 public class HerokuappTests {
     WebDriver driver;
     Herokuapp herokuapp;
+    String excelPath = "src/test/resources/TestDataExcel.xlsx";
+    String sheetName = "Sheet1";
     @BeforeTest
     public void setup() {
         // Create ChromeOptions to configure browser behavior
@@ -50,10 +53,11 @@ Close Google Chrome
 */
     @Test
     public void testW3SchoolsHtmlTable() {
+        String expectedCountry = ExcelReader.getCellData(excelPath, sheetName, 4, 2);
         //navigate to the W3Schools HTML Tables page
         driver.get("https://www.w3schools.com/html/html_tables.asp");
         // Assert that the country is Austria
-        Assert.assertEquals(herokuapp.getCountry(), "Austria", "The country for Ernst Handel is not Austria.");
+        Assert.assertEquals(herokuapp.getCountry(), expectedCountry, "The country for Ernst Handel is not Austria.");
     }
 
     /*#8
@@ -66,12 +70,13 @@ Close Google Chrome
 */
     @Test
     public void testHerokuappUpload() {
+        String expectedUploadMessage = ExcelReader.getCellData(excelPath, sheetName, 5, 2);
         //navigate to the Herokuapp Upload page
         driver.get("http://the-internet.herokuapp.com/upload");
 
         Assert.assertEquals
                 (herokuapp.uploadFile("C:\\Users\\shaim\\OneDrive\\Desktop\\AI TOOLS.png"),
-                "File Uploaded!", "File upload was not successful.");
+                        expectedUploadMessage, "File upload was not successful.");
 
     }
 

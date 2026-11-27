@@ -1,6 +1,6 @@
-package testPackage.Pages;
+package testPackage.pages;
 
-import Pages.Duckduckgo;
+import pages.Duckduckgo;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import utils.ExcelReader;
+
 import java.time.Duration;
 
 
@@ -17,7 +19,8 @@ public class DuckduckgoByFirfoxTests {
     Duckduckgo duckduckgoPage;
     //variable for explicit wait
     WebDriverWait wait;
-
+    String excelPath = "src/test/resources/TestDataExcel.xlsx";
+    String sheetName = "Sheet1";
     @BeforeTest
     public void setup() {
 
@@ -47,9 +50,10 @@ Close Mozilla Firefox
  */
 @Test
 public void testDuckduckgoSearchTestNG() {
-
+  String searchTerm = ExcelReader.getCellData(excelPath, sheetName, 2, 1);
+  String    expectedText = ExcelReader.getCellData(excelPath, sheetName, 2, 2);
     // Locate the search input field and enter the search query
-    duckduckgoPage.search("TestNG");
+    duckduckgoPage.search(searchTerm);
 
 
    //locate the fourth result link and get its text
@@ -58,7 +62,7 @@ public void testDuckduckgoSearchTestNG() {
 
 
     // Assert that the first result link is as expected
-    Assert.assertEquals(duckduckgoPage.getFourthResultText(), "TestNG Tutorial");
+    Assert.assertEquals(duckduckgoPage.getFourthResultText(),   expectedText);
 }
 
 

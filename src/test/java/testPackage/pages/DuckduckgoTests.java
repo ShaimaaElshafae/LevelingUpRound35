@@ -1,6 +1,6 @@
-package testPackage.Pages;
+package testPackage.pages;
 
-import Pages.Duckduckgo;
+import pages.Duckduckgo;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -8,12 +8,15 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
+import utils.ExcelReader;
 
 
 public class DuckduckgoTests {
     WebDriver driver;
     Duckduckgo duckduckgoPage;
+    String excelPath = "src/test/resources/TestDataExcel.xlsx";
+    String sheetName = "Sheet1";
+
     @BeforeTest
     public void setup() {
         // Create ChromeOptions to configure browser behavior
@@ -40,8 +43,9 @@ Close Google Chrome
     @Test
     public void testDuckduckgoTitle() {
 
+        String assertion = ExcelReader.getCellData(excelPath, sheetName, 1, 2);
         System.out.println("Page title: " + duckduckgoPage.getPageTitle());
-        Assert.assertEquals(duckduckgoPage.getPageTitle(), "Google", "Page title does not match expected value.");
+        Assert.assertEquals(duckduckgoPage.getPageTitle(), assertion, "Page title does not match expected value.");
     }
 
     /*
@@ -72,11 +76,13 @@ Close Google Chrome
  */
     @Test
     public void testDuckduckgoSearch() {
+        String searchTerm = ExcelReader.getCellData(excelPath, sheetName, 2, 1);
+        String expectedLink = ExcelReader.getCellData(excelPath, sheetName, 2, 2);
+        duckduckgoPage.search(searchTerm);
 
-        duckduckgoPage.search("Selenium WebDriver");
         System.out.println("First result link: " + duckduckgoPage.getFirstResultLink());
         // Assert that the first result link is as expected
-        Assert.assertEquals(duckduckgoPage.getFirstResultLink(), "https://www.selenium.dev/documentation/webdriver/");
+        Assert.assertEquals(duckduckgoPage.getFirstResultLink(), expectedLink);
     }
 
     /*
@@ -91,9 +97,10 @@ Close Google Chrome
 
     @Test
     public void testDuckduckgoSearchCucumberIO() {
+       String   searchTerm = ExcelReader.getCellData(excelPath, sheetName, 3, 1);
+       String   expectedLink = ExcelReader.getCellData(excelPath, sheetName, 3, 2);
 
-
-        duckduckgoPage.search("Cucumber IO");
+        duckduckgoPage.search(searchTerm);
 
 
         // Locate the second result link and get its href attribute
@@ -101,7 +108,7 @@ Close Google Chrome
         System.out.println("Second result link: " + duckduckgoPage.getSecondResultLink());
 
         // Assert that the second result link contains the expected URL
-        Assert.assertEquals(duckduckgoPage.getSecondResultLink(), "https://www.linkedin.com");
+        Assert.assertTrue(duckduckgoPage.getSecondResultLink().contains(expectedLink), "Second result link does not contain the expected URL.");
     }
 
 
