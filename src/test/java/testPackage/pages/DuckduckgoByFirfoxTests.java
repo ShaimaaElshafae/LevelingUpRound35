@@ -51,18 +51,14 @@ Close Mozilla Firefox
 @Test
 public void testDuckduckgoSearchTestNG() {
   String searchTerm = ExcelReader.getCellData(excelPath, sheetName, 2, 1);
-  String    expectedText = ExcelReader.getCellData(excelPath, sheetName, 2, 2);
+  String expectedText = ExcelReader.getCellData(excelPath, sheetName, 2, 2);
     // Locate the search input field and enter the search query
     duckduckgoPage.search(searchTerm);
 
-
-   //locate the fourth result link and get its text
+    // Wait for the fourth result to load, then compare its text
 
     System.out.println("Fourth result text: " + duckduckgoPage.getFourthResultText());
-
-
-    // Assert that the first result link is as expected
-    Assert.assertEquals(duckduckgoPage.getFourthResultText(),   expectedText);
+    Assert.assertEquals(duckduckgoPage.getFourthResultText(), expectedText);
 }
 
 
@@ -71,6 +67,6 @@ public void testDuckduckgoSearchTestNG() {
     @AfterTest
     public void teardown() {
         driver.quit();
-        System.out.println("Tearing down the test environment...");
+
     }
 }
